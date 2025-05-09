@@ -6,10 +6,15 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './features/auth/AuthContext';
 import MainLayout from './components/layout/MainLayout';
 import ProtectedRoute from './routes/ProtectedRoute';
-import RoleBasedRoute from './routes/RoleBasedRoute'; 
+import RoleBasedRoute from './routes/RoleBasedRoute';
 
 import LoginPage from './features/auth/LoginPage';
 import DashboardDispatcher from './features/dashboard/DashboardDispatcher';
+import AdminDashboard from './dashboard/AdminDashboard';
+import DoctorManagementPage from './features/DoctorManagment/Doctor';
+import NursManagementPage from './features/NursManagment/Nurs';
+import WardBoyManagementPage from './features/WardBoyManagment/WardBoy';
+import RoomManagement from './features/RoomManagment/RoomManagment';
 
 
 const PlaceholderPage = ({ title }) => <div className="p-6"><h1 className="text-2xl">{title}</h1><p>This page is under construction.</p></div>;
@@ -45,8 +50,8 @@ function App() {
               {/* Protected Routes - User must be authenticated */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route path="/dashboard" element={<DashboardDispatcher />} />
-                
+                <Route path="/dashboard" element={<AdminDashboard />} />
+
                 {/* Patient Routes - Example: Receptionist, Doctor, Nurse, Admin might access list */}
                 <Route element={<RoleBasedRoute allowedRoles={['Receptionist', 'Doctor', 'Nurse', 'Admin']} />}>
                   <Route path="/patients" element={<PatientListPage />} />
@@ -55,7 +60,7 @@ function App() {
                 <Route element={<RoleBasedRoute allowedRoles={['Receptionist', 'Admin']} />}>
                   <Route path="/patients/new" element={<PatientCreatePage />} />
                 </Route>
-                
+
                 {/* Appointment Routes */}
                 <Route element={<RoleBasedRoute allowedRoles={['Receptionist', 'Doctor', 'Admin']} />}>
                   <Route path="/appointments/schedule" element={<AppointmentSchedulerPage />} />
@@ -68,12 +73,16 @@ function App() {
                 <Route element={<RoleBasedRoute allowedRoles={['Nurse', 'WardBoy']} />}>
                     <Route path="/assignments/my-tasks" element={<MyTasksPage />} />
                 </Route>
-                
+
                 {/* Admin Only Routes */}
                 <Route element={<RoleBasedRoute allowedRoles={['Admin']} />}>
                   <Route path="/admin/users" element={<UserManagementPage />} />
                   <Route path="/admin/staff" element={<StaffManagementPage />} />
+                   <Route path="admin/doctors" element={<DoctorManagementPage />} />
+                   <Route path="admin/nurses" element={<NursManagementPage />} />
+                   <Route path="admin/wardboys" element={<WardBoyManagementPage />} />
                   <Route path="/admin/rooms" element={<RoomManagementPage />} />
+                  <Route path="/rooms" element={<RoomManagement />} />
                   <Route path="/admin/services" element={<ServiceManagementPage />} />
                 </Route>
 
