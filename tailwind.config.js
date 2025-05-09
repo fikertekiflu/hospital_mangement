@@ -2,10 +2,16 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}", // Ensure this covers your files
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // Example: using Inter font
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    // require('@tailwindcss/forms'), // If you need enhanced form styling
+  ],
 }
