@@ -1,26 +1,24 @@
-// ../components/ui/dialog.js (or your chosen path)
+// ../components/ui/dialog.js
 import React, { forwardRef } from 'react';
-import { cn } from '../../lib/utils'; // Assuming this path is correct
-// You might want a Button component for DialogTrigger if it's not a direct child
-// import { Button } from './button'; // If DialogTrigger is a Button variant
+import { cn } from '../../lib/utils';
+// import { X } from 'lucide-react'; // Optional: if you want a close button in DialogContent
 
 const Dialog = forwardRef(function Dialog(props, ref) {
-  // This component is often a conceptual wrapper in libraries like Radix or HeadlessUI,
-  // with DialogContent being the visible modal.
-  // For simplicity, if 'open' prop is used, it could control rendering of children.
   const { children, open, onOpenChange, ...otherProps } = props;
-  // If you are not using a library to manage the dialog state,
-  // the 'open' prop would control the visibility of DialogContent.
-  // This basic version doesn't implement overlay or portal logic itself.
-  // It assumes 'children' will likely include DialogContent which is conditionally rendered by the parent.
-  return open ? <>{children}</> : null; // Or just a fragment <>{children}</> if parent handles open
+  // This component will render its children (which should include DialogContent)
+  // only when the 'open' prop is true.
+  // The onOpenChange prop is used by the parent page to control the 'open' state.
+  if (!open) {
+    return null;
+  }
+  return <div ref={ref} {...otherProps}>{children}</div>; // Render children directly when open
 });
 Dialog.displayName = 'Dialog';
 
 const DialogTrigger = forwardRef(function DialogTrigger(props, ref) {
   const { className, children, ...otherProps } = props;
-  // Often, DialogTrigger is just a button. You could use your existing Button component.
-  // For a generic trigger, it can be a simple button or a span that receives an onClick.
+  // This is a basic trigger. In your RoomManagementPage, you're using a separate
+  // Button to control the dialog's open state, which is also perfectly fine.
   return (
     <button ref={ref} className={cn('', className)} {...otherProps}>
       {children}
@@ -30,26 +28,40 @@ const DialogTrigger = forwardRef(function DialogTrigger(props, ref) {
 DialogTrigger.displayName = 'DialogTrigger';
 
 const DialogContent = forwardRef(function DialogContent(props, ref) {
-  const { className, children, ...otherProps } = props;
-  // This is the actual modal window.
-  // For a real dialog, you'd add fixed positioning, overlay, etc.
-  // This is a simplified version for structure.
+  const { className, children, onOverlayClick, // Example prop if you want overlay click to close
+    ...otherProps } = props;
+
   return (
+    // This outer div is the semi-transparent overlay and centering container.
+    // MODIFICATION: Changed 'fixed' to 'absolute' and added overlay background.
     <div
       ref={ref}
       className={cn(
-        'fixed inset-0 z-50 flex items-center justify-center p-4', // Basic overlay and centering
-        className // Allows override of positioning if needed
+        'absolute inset-0 z-40 flex items-center justify-center p-4 bg-black bg-opacity-50', // Changed to 'absolute', added bg
+        className
       )}
-      // onClick={(e) => e.stopPropagation()} // To prevent closing when clicking inside content if overlay handles close
+      onClick={onOverlayClick} // Call this if overlay click should close the dialog
     >
+      {/* This inner div is the actual modal panel. */}
       <div
         className={cn(
-            'bg-white rounded-lg border shadow-xl p-6 w-full max-w-md', // Default content styling
-            'dark:bg-gray-800 dark:border-gray-700' // Optional dark mode styling
+          'bg-white rounded-lg border shadow-xl p-6 w-full max-w-md relative', // Added 'relative' for potential internal absolutely positioned elements (e.g., a close button)
+          // 'dark:bg-gray-800 dark:border-gray-700' // Optional dark mode
         )}
+        onClick={(e) => e.stopPropagation()} // Prevents clicks inside the modal from bubbling up to the overlay
         {...otherProps}
       >
+        {/* Optional: Add a close button inside the modal panel
+        {onOverlayClick && ( // Assuming onOverlayClick is also your close handler
+          <button
+            onClick={onOverlayClick}
+            className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100"
+            aria-label="Close dialog"
+          >
+            <X className="h-5 w-5 text-gray-600" />
+          </button>
+        )}
+        */}
         {children}
       </div>
     </div>

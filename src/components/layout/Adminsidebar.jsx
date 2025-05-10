@@ -30,31 +30,31 @@ const Sidebar = ({ onLogout }) => {
       icon: <LayoutDashboard className="h-4 w-4" />,
       path: '/dashboard',
     },
-    {
-      label: 'Users',
-      icon: <Users className="h-4 w-4" />,
-      path: '/users',
-    },
-    {
-      label: 'Patients',
-      icon: <User className="h-4 w-4" />,
-      path: '/patients',
-    },
-    {
-      label: 'Appointments',
-      icon: <Calendar className="h-4 w-4" />,
-      path: '/appointments',
-    },
-    {
-      label: 'Treatments',
-      icon: <Activity className="h-4 w-4" />,
-      path: '/treatments',
-    },
-    {
-      label: 'Bills',
-      icon: <ShoppingCart className="h-4 w-4" />,
-      path: '/bills',
-    },
+    // {
+    //   label: 'Users',
+    //   icon: <Users className="h-4 w-4" />,
+    //   path: '/users',
+    // },
+    // {
+    //   label: 'Patients',
+    //   icon: <User className="h-4 w-4" />,
+    //   path: '/patients',
+    // },
+    // {
+    //   label: 'Appointments',
+    //   icon: <Calendar className="h-4 w-4" />,
+    //   path: '/appointments',
+    // },
+    // {
+    //   label: 'Treatments',
+    //   icon: <Activity className="h-4 w-4" />,
+    //   path: '/treatments',
+    // },
+    // {
+    //   label: 'Bills',
+    //   icon: <ShoppingCart className="h-4 w-4" />,
+    //   path: '/bills',
+    // },
     {
       label: 'Staff',
       icon: <UserPlus className="h-4 w-4" />,
